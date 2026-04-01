@@ -7,6 +7,7 @@ import (
 
 	"github.com/Higor-ViniciusDev/agent-ia-go/configuration/logger"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/api/web"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -14,6 +15,11 @@ func main() {
 		if err := logger.GetLogger().Sync(); err != nil {
 			panic("logger error uninitialized")
 		}
+
+		if err := godotenv.Load(); err != nil {
+			panic("error in load variables ambient")
+		}
+
 	}()
 
 	webServerPort := os.Getenv("WEB_SERVER_PORT")
