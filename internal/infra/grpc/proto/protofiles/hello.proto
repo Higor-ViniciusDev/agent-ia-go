@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "internal/infra/grpc/proto/pb";
+
+message Blank {}
+
+
+message Hello {
+  string message = 1;
+}
+
+service HelloWorld {
+  rpc hello(Blank) returns (Hello);
+}
