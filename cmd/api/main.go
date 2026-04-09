@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/api/web"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/proto/pb"
 	services "github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/service"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -55,7 +57,7 @@ func main() {
 
 	go webserver.InitWebServer()
 
-	serviceGRPC := services.NewOrderService()
+	serviceGRPC := services.NewHelloService("hello teste 25")
 	grpcServe := grpc.NewServer()
 	pb.RegisterHelloWorldServer(grpcServe, serviceGRPC)
 	reflection.Register(grpcServe)
@@ -67,5 +69,24 @@ func main() {
 	}
 
 	fmt.Println("Servidor GRPC Rodando na porta", 50051)
-	grpcServe.Serve(listen)
+
+	if err != nil {
+		panic(err)
+	}
+
+	go grpcServe.Serve(listen)
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	mux := runtime.NewServeMux()
+
+	opts := []grpc.DialOption{
+		grpc.WithInsecure(),
+	}
+
+	pb.RegisterHelloWorldHandlerFromEndpoint(ctx, mux, "app:50051", opts)
+
+	http.ListenAndServe(":8080", mux)
 }

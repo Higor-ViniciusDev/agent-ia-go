@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	HelloWorld_Hello_FullMethodName = "/pb.HelloWorld/hello"
+	HelloWorld_Hello_FullMethodName = "/pb.HelloWorld/Hello"
 )
 
 // HelloWorldClient is the client API for HelloWorld service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HelloWorldClient interface {
-	Hello(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*Hello, error)
+	Hello(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*HelloResponse, error)
 }
 
 type helloWorldClient struct {
@@ -37,9 +37,9 @@ func NewHelloWorldClient(cc grpc.ClientConnInterface) HelloWorldClient {
 	return &helloWorldClient{cc}
 }
 
-func (c *helloWorldClient) Hello(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*Hello, error) {
+func (c *helloWorldClient) Hello(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*HelloResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Hello)
+	out := new(HelloResponse)
 	err := c.cc.Invoke(ctx, HelloWorld_Hello_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (c *helloWorldClient) Hello(ctx context.Context, in *Blank, opts ...grpc.Ca
 // All implementations must embed UnimplementedHelloWorldServer
 // for forward compatibility.
 type HelloWorldServer interface {
-	Hello(context.Context, *Blank) (*Hello, error)
+	Hello(context.Context, *Blank) (*HelloResponse, error)
 	mustEmbedUnimplementedHelloWorldServer()
 }
 
@@ -62,7 +62,7 @@ type HelloWorldServer interface {
 // pointer dereference when methods are called.
 type UnimplementedHelloWorldServer struct{}
 
-func (UnimplementedHelloWorldServer) Hello(context.Context, *Blank) (*Hello, error) {
+func (UnimplementedHelloWorldServer) Hello(context.Context, *Blank) (*HelloResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Hello not implemented")
 }
 func (UnimplementedHelloWorldServer) mustEmbedUnimplementedHelloWorldServer() {}
@@ -112,7 +112,7 @@ var HelloWorld_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*HelloWorldServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "hello",
+			MethodName: "Hello",
 			Handler:    _HelloWorld_Hello_Handler,
 		},
 	},

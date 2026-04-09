@@ -7,6 +7,7 @@
 package pb
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -57,27 +58,27 @@ func (*Blank) Descriptor() ([]byte, []int) {
 	return file_internal_infra_grpc_proto_protofiles_hello_proto_rawDescGZIP(), []int{0}
 }
 
-type Hello struct {
+type HelloResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Hello) Reset() {
-	*x = Hello{}
+func (x *HelloResponse) Reset() {
+	*x = HelloResponse{}
 	mi := &file_internal_infra_grpc_proto_protofiles_hello_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Hello) String() string {
+func (x *HelloResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Hello) ProtoMessage() {}
+func (*HelloResponse) ProtoMessage() {}
 
-func (x *Hello) ProtoReflect() protoreflect.Message {
+func (x *HelloResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_internal_infra_grpc_proto_protofiles_hello_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -89,12 +90,12 @@ func (x *Hello) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Hello.ProtoReflect.Descriptor instead.
-func (*Hello) Descriptor() ([]byte, []int) {
+// Deprecated: Use HelloResponse.ProtoReflect.Descriptor instead.
+func (*HelloResponse) Descriptor() ([]byte, []int) {
 	return file_internal_infra_grpc_proto_protofiles_hello_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Hello) GetMessage() string {
+func (x *HelloResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
@@ -105,13 +106,13 @@ var File_internal_infra_grpc_proto_protofiles_hello_proto protoreflect.FileDescr
 
 const file_internal_infra_grpc_proto_protofiles_hello_proto_rawDesc = "" +
 	"\n" +
-	"0internal/infra/grpc/proto/protofiles/hello.proto\x12\x02pb\"\a\n" +
-	"\x05Blank\"!\n" +
-	"\x05Hello\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2+\n" +
+	"0internal/infra/grpc/proto/protofiles/hello.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\"\a\n" +
+	"\x05Blank\")\n" +
+	"\rHelloResponse\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2F\n" +
 	"\n" +
-	"HelloWorld\x12\x1d\n" +
-	"\x05hello\x12\t.pb.Blank\x1a\t.pb.HelloB\x1eZ\x1cinternal/infra/grpc/proto/pbb\x06proto3"
+	"HelloWorld\x128\n" +
+	"\x05Hello\x12\t.pb.Blank\x1a\x11.pb.HelloResponse\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/helloB\x1eZ\x1cinternal/infra/grpc/proto/pbb\x06proto3"
 
 var (
 	file_internal_infra_grpc_proto_protofiles_hello_proto_rawDescOnce sync.Once
@@ -127,12 +128,12 @@ func file_internal_infra_grpc_proto_protofiles_hello_proto_rawDescGZIP() []byte 
 
 var file_internal_infra_grpc_proto_protofiles_hello_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_internal_infra_grpc_proto_protofiles_hello_proto_goTypes = []any{
-	(*Blank)(nil), // 0: pb.Blank
-	(*Hello)(nil), // 1: pb.Hello
+	(*Blank)(nil),         // 0: pb.Blank
+	(*HelloResponse)(nil), // 1: pb.HelloResponse
 }
 var file_internal_infra_grpc_proto_protofiles_hello_proto_depIdxs = []int32{
-	0, // 0: pb.HelloWorld.hello:input_type -> pb.Blank
-	1, // 1: pb.HelloWorld.hello:output_type -> pb.Hello
+	0, // 0: pb.HelloWorld.Hello:input_type -> pb.Blank
+	1, // 1: pb.HelloWorld.Hello:output_type -> pb.HelloResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

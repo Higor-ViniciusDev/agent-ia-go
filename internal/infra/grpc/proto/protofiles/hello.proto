@@ -4,13 +4,19 @@ package pb;
 
 option go_package = "internal/infra/grpc/proto/pb";
 
-message Blank {}
-
-
-message Hello {
-  string message = 1;
-}
+import "google/api/annotations.proto";
 
 service HelloWorld {
-  rpc hello(Blank) returns (Hello);
+  rpc Hello (Blank) returns (HelloResponse) {
+    option (google.api.http) = {
+      get: "/v1/hello"
+    };
+  }
+
+}
+
+message Blank {}
+
+message HelloResponse {
+  string message = 1;
 }

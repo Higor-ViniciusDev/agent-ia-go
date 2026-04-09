@@ -7,15 +7,18 @@ import (
 )
 
 type HelloService struct {
+	Message string
 	pb.UnimplementedHelloWorldServer
 }
 
-func (hc *HelloService) Hello(ctx context.Context, in *pb.Blank) (*pb.Hello, error) {
-	return &pb.Hello{
-		Message: "Ola mundo",
+func (hc *HelloService) Hello(ctx context.Context, in *pb.Blank) (*pb.HelloResponse, error) {
+	return &pb.HelloResponse{
+		Message: hc.Message,
 	}, nil
 }
 
-func NewOrderService() *HelloService {
-	return &HelloService{}
+func NewHelloService(message string) *HelloService {
+	return &HelloService{
+		Message: message,
+	}
 }
