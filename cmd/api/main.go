@@ -57,7 +57,7 @@ func main() {
 
 	go webserver.InitWebServer()
 
-	serviceGRPC := services.NewHelloService("hello teste 25")
+	serviceGRPC := services.NewHelloService("hello teste 10-2123-0321-0123")
 	grpcServe := grpc.NewServer()
 	pb.RegisterHelloWorldServer(grpcServe, serviceGRPC)
 	reflection.Register(grpcServe)
@@ -69,10 +69,6 @@ func main() {
 	}
 
 	fmt.Println("Servidor GRPC Rodando na porta", 50051)
-
-	if err != nil {
-		panic(err)
-	}
 
 	go grpcServe.Serve(listen)
 

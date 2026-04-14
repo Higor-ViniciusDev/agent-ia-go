@@ -8,3 +8,9 @@ down:
 
 test:
 	go test ./...
+
+lint:
+	docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v2.11.4 golangci-lint run
+
+build-grpc:
+	docker run --rm -v $(CURDIR):/app -w /app protoc-gen protoc -I . -I /googleapis --go_out=. --go-grpc_out=. --grpc-gateway_out=. internal/infra/grpc/proto/protofiles/hello.proto
