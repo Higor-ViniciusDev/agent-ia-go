@@ -5,9 +5,24 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: sem_nome
+      POSTGRES_DB: work_agent
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin4_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
 
   app:
     build:
@@ -25,3 +40,7 @@ services:
       timeout: 3s
       retries: 2
       start_period: 50s
+
+volumes:
+  pgadmin4_data:
+  postgres_data:
