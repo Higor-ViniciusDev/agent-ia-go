@@ -5,18 +5,22 @@ package pb;
 option go_package = "internal/infra/grpc/proto/pb";
 
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 
-service HelloWorld {
-  rpc Hello (Blank) returns (HelloResponse) {
+
+service Work {
+  rpc Hello (WorkRequest) returns (WorkResponse) {
     option (google.api.http) = {
-      get: "/v1/hello"
+      post: "/work"
+      body: "*"
     };
   }
-
 }
 
-message Blank {}
+message WorkRequest {
+  google.protobuf.Struct data = 1;
+}
 
-message HelloResponse {
-  string message = 1;
+message WorkResponse {
+  string response = 1;
 }
