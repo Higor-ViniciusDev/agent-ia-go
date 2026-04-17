@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package health_pb;
+
+option go_package = "internal/infra/grpc/proto/pb";
+
+import "google/api/annotations.proto";
+
+message HealthResponse {
+  string status = 1;
+}
+
+message Blank {}
+
+//
+service Health {
+  // Health checks the service health status
+  rpc Health (Blank) returns (HealthResponse) {
+    option (google.api.http) = {
+      get: "/health"
+    };
+  }
+}

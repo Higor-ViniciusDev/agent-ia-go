@@ -13,7 +13,14 @@ lint:
 	docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v2.11.4 golangci-lint run
 
 build-grpc:
-	docker run --rm -v $(CURDIR):/app -w /app protoc-gen protoc -I . -I /googleapis --go_out=. --go-grpc_out=. --grpc-gateway_out=. internal/infra/grpc/proto/protofiles/hello.proto
+	docker run --rm -v $(CURDIR):/app -w /app protoc-gen sh -c \
+		'protoc -I . -I /googleapis \
+		--go_out=. \
+		--go-grpc_out=. \
+		--grpc-gateway_out=. \
+		internal/infra/grpc/proto/protofiles/*.proto'
 
 migrate-up:
-	docker run --rm -v $(CURDIR):/app -w /app migrate/migrate -path ./sql/migrations -database "postgres://postgres:postgres@host.docker.internal:5432/work_agent?sslmode=disable" up
+	docker run --rm -v $(CURDIR):/app -w /app migrate/migrate \
+		-path ./sql/migrations \
+		-database "postgres://postgres:postgres@host.docker.internal:5432/work_agent?sslmode=disable" up

@@ -1,15 +1,16 @@
 syntax = "proto3";
 
-package pb;
+package work_pb;
 
 option go_package = "internal/infra/grpc/proto/pb";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
-
+//
 service Work {
-  rpc Hello (WorkRequest) returns (WorkResponse) {
+ // main action api, this service apply all routes for processament
+  rpc WorkAction (WorkRequest) returns (WorkResponse) {
     option (google.api.http) = {
       post: "/work"
       body: "*"

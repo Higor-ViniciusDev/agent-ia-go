@@ -1,4 +1,3 @@
-// internal/app/app.go
 package app
 
 import (
@@ -6,55 +5,74 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
+	"github.com/Higor-ViniciusDev/agent-ia-go/configuration/logger"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/config"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/proto/pb"
-	services "github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/service"
+	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/service"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type App struct {
-	Config *config.Config
+	cfg *config.Config
 }
 
 func New(cfg *config.Config) *App {
-	return &App{Config: cfg}
+	return &App{cfg: cfg}
 }
 
 func (a *App) Run(ctx context.Context) error {
-	// gRPC
+	// --- gRPC ---
 	grpcServer := grpc.NewServer()
-	helloService := services.NewHelloService("hello clean")
+	pb.RegisterHealthServer(grpcServer, service.NewHealthService())
 
-	pb.RegisterHelloWorldServer(grpcServer, helloService)
-
-	lis, err := net.Listen("tcp", ":"+a.Config.GRPCPort)
+	lis, err := net.Listen("tcp", ":"+a.cfg.GRPCPort)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed in heard gRPC: %w", err)
 	}
 
 	go func() {
-		fmt.Println("gRPC rodando na porta", a.Config.GRPCPort)
+		logger.Info("grpc has been initialized", zap.String("port", a.cfg.GRPCPort))
 		if err := grpcServer.Serve(lis); err != nil {
-			panic(err)
+			logger.Error("gRPC ended", err)
 		}
 	}()
 
-	// HTTP Gateway
+	// --- HTTP Gateway ---
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithInsecure()}
-
-	err = pb.RegisterHelloWorldHandlerFromEndpoint(
-		ctx,
-		mux,
-		"localhost:"+a.Config.GRPCPort,
-		opts,
-	)
-	if err != nil {
-		return err
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()), // ← obrigatório
 	}
 
-	fmt.Println("HTTP rodando na porta", a.Config.WebPort)
-	return http.ListenAndServe(":"+a.Config.WebPort, mux)
+	if err := pb.RegisterHealthHandlerFromEndpoint(ctx, mux, "localhost:"+a.cfg.GRPCPort, opts); err != nil {
+		return fmt.Errorf("error in registed gateway: %w", err)
+	}
+
+	httpServer := &http.Server{
+		Addr:    ":" + a.cfg.WebPort,
+		Handler: mux,
+	}
+
+	// --- Graceful Shutdown ---
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		logger.Info("HTTP initialized", zap.String("port", a.cfg.WebPort))
+		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			logger.Error("HTTP ended with error", err)
+		}
+	}()
+
+	<-quit
+	logger.Info("Shutdown app...")
+
+	grpcServer.GracefulStop()
+	return httpServer.Shutdown(ctx)
 }

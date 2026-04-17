@@ -30,8 +30,6 @@ services:
       dockerfile: ./docker/Dockerfile
     ports:
       - "3000:8000"
-      - "50051:50051"
-      - "8080:8080"
     env_file:
     - ../.env
     healthcheck:

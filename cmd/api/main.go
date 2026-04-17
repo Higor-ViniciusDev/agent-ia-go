@@ -6,17 +6,13 @@ import (
 
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/app"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/config"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	_ = godotenv.Load()
-
+	ctx := context.Background()
 	cfg := config.Load()
 
-	application := app.New(cfg)
-
-	if err := application.Run(context.Background()); err != nil {
+	if err := app.New(cfg).Run(ctx); err != nil {
 		log.Fatal(err)
 	}
 }

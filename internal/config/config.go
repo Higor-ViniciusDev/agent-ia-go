@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/Higor-ViniciusDev/agent-ia-go/configuration/logger"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -15,9 +16,10 @@ func Load() *Config {
 	if err := logger.GetLogger().Sync(); err != nil {
 		panic("logger error uninitialized")
 	}
+	_ = godotenv.Load()
 
 	return &Config{
-		WebPort:  getEnv("WEB_SERVER_PORT", "8080"),
+		WebPort:  getEnv("WEB_SERVER_PORT", "8000"),
 		GRPCPort: getEnv("GRPC_PORT", "50051"),
 	}
 }
