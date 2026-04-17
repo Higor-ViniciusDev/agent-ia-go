@@ -7,7 +7,7 @@ import (
 )
 
 type HealthService struct {
-	*pb.UnimplementedHealthServer
+	pb.UnimplementedHealthServer
 }
 
 func NewHealthService() *HealthService {

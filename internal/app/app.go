@@ -47,7 +47,7 @@ func (a *App) Run(ctx context.Context) error {
 	// --- HTTP Gateway ---
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{
-		grpc.WithTransportCredentials(insecure.NewCredentials()), // ← obrigatório
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
 	if err := pb.RegisterHealthHandlerFromEndpoint(ctx, mux, "localhost:"+a.cfg.GRPCPort, opts); err != nil {
