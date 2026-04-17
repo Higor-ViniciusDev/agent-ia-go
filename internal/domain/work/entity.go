@@ -1,7 +1,6 @@
 package entity
 
 import (
-	"context"
 	"time"
 )
 
@@ -40,9 +39,4 @@ type Work struct {
 
 func NewWorkEntity() *Work {
 	return &Work{}
-}
-
-type WorkRepository interface {
-	Create(ctx context.Context, work *Work) error
-	GetByID(ctx context.Context, id string) (*Work, error)
 }

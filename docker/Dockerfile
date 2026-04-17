@@ -19,6 +19,6 @@ WORKDIR /app
 
 COPY --from=builder /app/agent-ia .
 
-EXPOSE 3000
+EXPOSE 8000
 
 CMD ["./agent-ia"]

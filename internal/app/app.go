@@ -9,10 +9,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/Higor-ViniciusDev/agent-ia-go/configuration/logger"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/config"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/proto/pb"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/service"
+	"github.com/Higor-ViniciusDev/agent-ia-go/pkg/logger"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

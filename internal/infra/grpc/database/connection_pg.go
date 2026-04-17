@@ -3,23 +3,14 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"os"
 
+	"github.com/Higor-ViniciusDev/agent-ia-go/internal/config"
 	_ "github.com/lib/pq"
 )
 
-func NewConnect() *sql.DB {
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	if host == "" {
-		host = "localhost"
-	}
-	if port == "" {
-		port = "5432"
-	}
-
+func NewConnect(cfg *config.Config) *sql.DB {
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		host, port, os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
+		cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPassword, cfg.DBName)
 
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {

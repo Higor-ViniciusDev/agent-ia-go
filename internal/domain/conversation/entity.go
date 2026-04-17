@@ -11,11 +11,3 @@ type Conversation struct {
 	title   string
 	CreatAt time.Time
 }
-
-type ConversationEntityInterface interface {
-	GetValuesEntity() string
-}
-
-func (c *Conversation) GetValuesEntity() string {
-	return "teste 25"
-}

@@ -2,25 +2,28 @@ package config
 
 import (
 	"os"
-
-	"github.com/Higor-ViniciusDev/agent-ia-go/configuration/logger"
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	WebPort  string
-	GRPCPort string
+	WebPort    string
+	GRPCPort   string
+	DBHost     string
+	DBPort     string
+	DBUser     string
+	DBPassword string
+	DBName     string
 }
 
 func Load() *Config {
-	if err := logger.GetLogger().Sync(); err != nil {
-		panic("logger error uninitialized")
-	}
-	_ = godotenv.Load()
-
 	return &Config{
 		WebPort:  getEnv("WEB_SERVER_PORT", "8000"),
 		GRPCPort: getEnv("GRPC_PORT", "50051"),
+
+		DBHost:     getEnv("DB_HOST", ""),
+		DBPort:     getEnv("DB_PORT", ""),
+		DBUser:     getEnv("DB_USER", ""),
+		DBPassword: getEnv("DB_PASSWORD", ""),
+		DBName:     getEnv("DB_NAME", ""),
 	}
 }
 
