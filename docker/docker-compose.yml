@@ -8,8 +8,16 @@ services:
       POSTGRES_DB: work_agent
     ports:
       - "5432:5432"
+    networks:
+      - appdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d work_agent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
   pgadmin4:
     image: dpage/pgadmin4
@@ -21,24 +29,35 @@ services:
       - "5050:80"
     volumes:
       - pgadmin4_data:/var/lib/pgadmin
+    networks:
+      - appdata
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   app:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
     ports:
-      - "3000:8000"
+      - "8000:8000"
     env_file:
-    - ../.env
+      - ../.env
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 40s
       timeout: 3s
       retries: 2
       start_period: 50s
+    networks:
+      - appdata
+    depends_on:
+      postgres:
+        condition: service_healthy 
 
 volumes:
   pgadmin4_data:
   postgres_data:
+
+networks:
+  appdata:

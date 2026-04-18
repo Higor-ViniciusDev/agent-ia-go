@@ -10,8 +10,11 @@ import (
 	"syscall"
 
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/config"
+	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/database"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/proto/pb"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/service"
+	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/repository"
+	work_usecase "github.com/Higor-ViniciusDev/agent-ia-go/internal/usecase/work"
 	"github.com/Higor-ViniciusDev/agent-ia-go/pkg/logger"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"go.uber.org/zap"
@@ -30,6 +33,14 @@ func New(cfg *config.Config) *App {
 func (a *App) Run(ctx context.Context) error {
 	// --- gRPC ---
 	grpcServer := grpc.NewServer()
+
+	db := database.NewConnect(a.cfg)
+
+	workRepo := repository.NewWorkRepository(db)       // infra
+	workUseCase := work_usecase.New(workRepo)          // usecase
+	workService := service.NewWorkService(workUseCase) // grpc service
+
+	pb.RegisterWorkServer(grpcServer, workService)
 	pb.RegisterHealthServer(grpcServer, service.NewHealthService())
 
 	lis, err := net.Listen("tcp", ":"+a.cfg.GRPCPort)
@@ -51,7 +62,11 @@ func (a *App) Run(ctx context.Context) error {
 	}
 
 	if err := pb.RegisterHealthHandlerFromEndpoint(ctx, mux, "localhost:"+a.cfg.GRPCPort, opts); err != nil {
-		return fmt.Errorf("error in registed gateway: %w", err)
+		return fmt.Errorf("error in registed healthCheck gateway: %w", err)
+	}
+
+	if err := pb.RegisterWorkHandlerFromEndpoint(ctx, mux, "localhost:"+a.cfg.GRPCPort, opts); err != nil {
+		return fmt.Errorf("error in registed WorkAction gateway: %w", err)
 	}
 
 	httpServer := &http.Server{

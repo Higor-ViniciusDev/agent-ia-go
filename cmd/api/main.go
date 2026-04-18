@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	//cod inative for production
+	// _ = godotenv.Load()
 	ctx := context.Background()
 	cfg := config.Load()
 

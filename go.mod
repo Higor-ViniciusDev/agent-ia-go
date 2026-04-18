@@ -3,10 +3,8 @@ module github.com/Higor-ViniciusDev/agent-ia-go
 go 1.24.1
 
 require (
-	github.com/go-chi/chi/v5 v5.2.5
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.28.0
-	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.12.3
 	go.uber.org/zap v1.27.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20260209200024-4cfbd4190f57
