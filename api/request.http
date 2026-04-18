@@ -1,0 +1,100 @@
+### Health Check
+GET http://localhost:8000/health
+Content-Type: application/json
+
+###
+
+### Work - Answer (resposta de pergunta)
+POST http://localhost:8000/work
+Content-Type: application/json
+
+{
+  "data": {
+    "type": "answer",
+    "conversation_id": "123e4567-e89b-12d3-a456-426614174000",
+    "prompt": "Qual o status do projeto?"
+  }
+}
+
+###
+
+### Work - Extract (extração de dados)
+POST http://localhost:8000/work
+Content-Type: application/json
+
+{
+  "data": {
+    "type": "extract",
+    "conversation_id": null,
+    "prompt": "Extraia os dados do documento abaixo",
+    "content": "Nome: João Silva, CPF: 123.456.789-00, Data: 2026-04-17"
+  }
+}
+
+###
+
+### Work - Classify (classificação)
+POST http://localhost:8000/work
+Content-Type: application/json
+
+{
+  "data": {
+    "type": "classify",
+    "conversation_id": null,
+    "prompt": "Classifique o sentimento do texto",
+    "content": "O produto chegou quebrado e o atendimento foi péssimo"
+  }
+}
+
+###
+
+### Work - Retrieve (busca/recuperação)
+POST http://localhost:8000/work
+Content-Type: application/json
+
+{
+  "data": {
+    "type": "retrieve",
+    "conversation_id": "123e4567-e89b-12d3-a456-426614174000",
+    "query": "histórico de compras do cliente"
+  }
+}
+
+###
+
+### Work - Tool Action (ação de ferramenta)
+POST http://localhost:8000/work
+Content-Type: application/json
+
+{
+  "data": {
+    "type": "tool_action",
+    "conversation_id": null,
+    "tool": "send_email",
+    "parameters": {
+      "to": "cliente@email.com",
+      "subject": "Confirmação de pedido",
+      "body": "Seu pedido foi confirmado."
+    }
+  }
+}
+
+###
+
+### Work - sem campo type (deve retornar 400)
+POST http://localhost:8000/work
+Content-Type: application/json
+
+{
+  "data": {
+    "prompt": "sem type definido"
+  }
+}
+
+###
+
+### Work - body vazio (deve retornar 400)
+POST http://localhost:8000/work
+Content-Type: application/json
+
+{}
