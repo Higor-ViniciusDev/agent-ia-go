@@ -8,12 +8,19 @@ import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
 //
-service Work {
+service WorkService {
  // main action api, this service apply all routes for processament
-  rpc WorkAction (WorkRequest) returns (WorkResponse) {
+  rpc WorkAction (WorkRequest) returns (ResponseWorkAction) {
     option (google.api.http) = {
       post: "/work"
       body: "*"
+    };
+  }
+
+  //Get Work by id
+  rpc GetWorkById (GetWorkByIdInput) returns (Work) {
+    option (google.api.http) = {
+      get: "/work/?{id}"
     };
   }
 }
@@ -22,6 +29,23 @@ message WorkRequest {
   google.protobuf.Struct data = 1;
 }
 
-message WorkResponse {
+message ResponseWorkAction {
   string response = 1;
+}
+
+message GetWorkByIdInput {
+  string id = 1;
+}
+
+message Work {
+  string id = 1;
+	string type = 2;
+	string status = 3;
+	string conversation_id = 4;
+	string input = 5;
+	string output = 6;
+	string error_message = 7;
+  string created_at = 8;
+	string updated_at = 9;
+	string completed_at = 10;
 }

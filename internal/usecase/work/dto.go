@@ -7,7 +7,7 @@ type WorkInput struct {
 }
 
 type WorkOutput struct {
-	ID       string
-	Status   string
-	Response string
+	ID       string `json:"id,omitempty"`
+	Status   string `json:"status,omitempty"`
+	Response string `json:"response,omitempty"`
 }

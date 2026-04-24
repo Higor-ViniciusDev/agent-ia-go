@@ -19,103 +19,143 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Work_WorkAction_FullMethodName = "/work_pb.Work/WorkAction"
+	WorkService_WorkAction_FullMethodName  = "/work_pb.WorkService/WorkAction"
+	WorkService_GetWorkById_FullMethodName = "/work_pb.WorkService/GetWorkById"
 )
 
-// WorkClient is the client API for Work service.
+// WorkServiceClient is the client API for WorkService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type WorkClient interface {
+type WorkServiceClient interface {
 	// main action api, this service apply all routes for processament
-	WorkAction(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*WorkResponse, error)
+	WorkAction(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*ResponseWorkAction, error)
+	//Get Work by id
+	GetWorkById(ctx context.Context, in *GetWorkByIdInput, opts ...grpc.CallOption) (*Work, error)
 }
 
-type workClient struct {
+type workServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewWorkClient(cc grpc.ClientConnInterface) WorkClient {
-	return &workClient{cc}
+func NewWorkServiceClient(cc grpc.ClientConnInterface) WorkServiceClient {
+	return &workServiceClient{cc}
 }
 
-func (c *workClient) WorkAction(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*WorkResponse, error) {
+func (c *workServiceClient) WorkAction(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*ResponseWorkAction, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(WorkResponse)
-	err := c.cc.Invoke(ctx, Work_WorkAction_FullMethodName, in, out, cOpts...)
+	out := new(ResponseWorkAction)
+	err := c.cc.Invoke(ctx, WorkService_WorkAction_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// WorkServer is the server API for Work service.
-// All implementations must embed UnimplementedWorkServer
-// for forward compatibility.
-type WorkServer interface {
-	// main action api, this service apply all routes for processament
-	WorkAction(context.Context, *WorkRequest) (*WorkResponse, error)
-	mustEmbedUnimplementedWorkServer()
+func (c *workServiceClient) GetWorkById(ctx context.Context, in *GetWorkByIdInput, opts ...grpc.CallOption) (*Work, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Work)
+	err := c.cc.Invoke(ctx, WorkService_GetWorkById_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-// UnimplementedWorkServer must be embedded to have
+// WorkServiceServer is the server API for WorkService service.
+// All implementations must embed UnimplementedWorkServiceServer
+// for forward compatibility.
+type WorkServiceServer interface {
+	// main action api, this service apply all routes for processament
+	WorkAction(context.Context, *WorkRequest) (*ResponseWorkAction, error)
+	//Get Work by id
+	GetWorkById(context.Context, *GetWorkByIdInput) (*Work, error)
+	mustEmbedUnimplementedWorkServiceServer()
+}
+
+// UnimplementedWorkServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedWorkServer struct{}
+type UnimplementedWorkServiceServer struct{}
 
-func (UnimplementedWorkServer) WorkAction(context.Context, *WorkRequest) (*WorkResponse, error) {
+func (UnimplementedWorkServiceServer) WorkAction(context.Context, *WorkRequest) (*ResponseWorkAction, error) {
 	return nil, status.Error(codes.Unimplemented, "method WorkAction not implemented")
 }
-func (UnimplementedWorkServer) mustEmbedUnimplementedWorkServer() {}
-func (UnimplementedWorkServer) testEmbeddedByValue()              {}
+func (UnimplementedWorkServiceServer) GetWorkById(context.Context, *GetWorkByIdInput) (*Work, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetWorkById not implemented")
+}
+func (UnimplementedWorkServiceServer) mustEmbedUnimplementedWorkServiceServer() {}
+func (UnimplementedWorkServiceServer) testEmbeddedByValue()                     {}
 
-// UnsafeWorkServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to WorkServer will
+// UnsafeWorkServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to WorkServiceServer will
 // result in compilation errors.
-type UnsafeWorkServer interface {
-	mustEmbedUnimplementedWorkServer()
+type UnsafeWorkServiceServer interface {
+	mustEmbedUnimplementedWorkServiceServer()
 }
 
-func RegisterWorkServer(s grpc.ServiceRegistrar, srv WorkServer) {
-	// If the following call panics, it indicates UnimplementedWorkServer was
+func RegisterWorkServiceServer(s grpc.ServiceRegistrar, srv WorkServiceServer) {
+	// If the following call panics, it indicates UnimplementedWorkServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Work_ServiceDesc, srv)
+	s.RegisterService(&WorkService_ServiceDesc, srv)
 }
 
-func _Work_WorkAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _WorkService_WorkAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WorkRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WorkServer).WorkAction(ctx, in)
+		return srv.(WorkServiceServer).WorkAction(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Work_WorkAction_FullMethodName,
+		FullMethod: WorkService_WorkAction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorkServer).WorkAction(ctx, req.(*WorkRequest))
+		return srv.(WorkServiceServer).WorkAction(ctx, req.(*WorkRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Work_ServiceDesc is the grpc.ServiceDesc for Work service.
+func _WorkService_GetWorkById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkByIdInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkServiceServer).GetWorkById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkService_GetWorkById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkServiceServer).GetWorkById(ctx, req.(*GetWorkByIdInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// WorkService_ServiceDesc is the grpc.ServiceDesc for WorkService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Work_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "work_pb.Work",
-	HandlerType: (*WorkServer)(nil),
+var WorkService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "work_pb.WorkService",
+	HandlerType: (*WorkServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "WorkAction",
-			Handler:    _Work_WorkAction_Handler,
+			Handler:    _WorkService_WorkAction_Handler,
+		},
+		{
+			MethodName: "GetWorkById",
+			Handler:    _WorkService_GetWorkById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

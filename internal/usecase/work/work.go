@@ -5,23 +5,22 @@ import (
 	"encoding/json"
 
 	entity "github.com/Higor-ViniciusDev/agent-ia-go/internal/domain/work"
+	"github.com/Higor-ViniciusDev/agent-ia-go/pkg/uuid_pkg"
 )
-
-type WorkUseCase interface {
-	Execute(ctx context.Context, input WorkInput) (*WorkOutput, error)
-}
 
 type workUseCase struct {
 	repo entity.WorkRepositoryInterface
 }
 
-func New(repo entity.WorkRepositoryInterface) WorkUseCase {
+func New(repo entity.WorkRepositoryInterface) *workUseCase {
 	return &workUseCase{repo: repo}
 }
 
 func (uc *workUseCase) Execute(ctx context.Context, input WorkInput) (*WorkOutput, error) {
 	work := entity.NewWorkEntity()
+
 	work.Type = entity.WorkType(input.Type)
+	work.ID = uuid_pkg.NewID().String()
 	work.Status = entity.WorkStatusPending
 	work.ConversationID = input.ConversationID
 

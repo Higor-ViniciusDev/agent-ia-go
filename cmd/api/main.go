@@ -6,11 +6,12 @@ import (
 
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/app"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/config"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	//cod inative for production
-	// _ = godotenv.Load()
+	_ = godotenv.Load()
 	ctx := context.Background()
 	cfg := config.Load()
 

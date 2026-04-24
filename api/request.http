@@ -98,3 +98,9 @@ POST http://localhost:8000/work
 Content-Type: application/json
 
 {}
+
+###
+
+###Get work by id
+GET http://localhost:8000/work
+Content-Type: application/json

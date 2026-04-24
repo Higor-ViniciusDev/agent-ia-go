@@ -40,7 +40,7 @@ func (a *App) Run(ctx context.Context) error {
 	workUseCase := work_usecase.New(workRepo)          // usecase
 	workService := service.NewWorkService(workUseCase) // grpc service
 
-	pb.RegisterWorkServer(grpcServer, workService)
+	pb.RegisterWorkServiceServer(grpcServer, workService)
 	pb.RegisterHealthServer(grpcServer, service.NewHealthService())
 
 	lis, err := net.Listen("tcp", ":"+a.cfg.GRPCPort)
@@ -65,7 +65,7 @@ func (a *App) Run(ctx context.Context) error {
 		return fmt.Errorf("error in registed healthCheck gateway: %w", err)
 	}
 
-	if err := pb.RegisterWorkHandlerFromEndpoint(ctx, mux, "localhost:"+a.cfg.GRPCPort, opts); err != nil {
+	if err := pb.RegisterWorkServiceHandlerFromEndpoint(ctx, mux, "localhost:"+a.cfg.GRPCPort, opts); err != nil {
 		return fmt.Errorf("error in registed WorkAction gateway: %w", err)
 	}
 

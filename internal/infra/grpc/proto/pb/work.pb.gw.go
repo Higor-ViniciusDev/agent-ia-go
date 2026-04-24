@@ -35,7 +35,7 @@ var (
 	_ = metadata.Join
 )
 
-func request_Work_WorkAction_0(ctx context.Context, marshaler runtime.Marshaler, client WorkClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_WorkService_WorkAction_0(ctx context.Context, marshaler runtime.Marshaler, client WorkServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq WorkRequest
 		metadata runtime.ServerMetadata
@@ -50,7 +50,7 @@ func request_Work_WorkAction_0(ctx context.Context, marshaler runtime.Marshaler,
 	return msg, metadata, err
 }
 
-func local_request_Work_WorkAction_0(ctx context.Context, marshaler runtime.Marshaler, server WorkServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_WorkService_WorkAction_0(ctx context.Context, marshaler runtime.Marshaler, server WorkServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq WorkRequest
 		metadata runtime.ServerMetadata
@@ -62,39 +62,94 @@ func local_request_Work_WorkAction_0(ctx context.Context, marshaler runtime.Mars
 	return msg, metadata, err
 }
 
-// RegisterWorkHandlerServer registers the http handlers for service Work to "mux".
-// UnaryRPC     :call WorkServer directly.
+var filter_WorkService_GetWorkById_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+
+func request_WorkService_GetWorkById_0(ctx context.Context, marshaler runtime.Marshaler, client WorkServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetWorkByIdInput
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_WorkService_GetWorkById_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.GetWorkById(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_WorkService_GetWorkById_0(ctx context.Context, marshaler runtime.Marshaler, server WorkServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetWorkByIdInput
+		metadata runtime.ServerMetadata
+	)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_WorkService_GetWorkById_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.GetWorkById(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+// RegisterWorkServiceHandlerServer registers the http handlers for service WorkService to "mux".
+// UnaryRPC     :call WorkServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterWorkHandlerFromEndpoint instead.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterWorkServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
-func RegisterWorkHandlerServer(ctx context.Context, mux *runtime.ServeMux, server WorkServer) error {
-	mux.Handle(http.MethodPost, pattern_Work_WorkAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+func RegisterWorkServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server WorkServiceServer) error {
+	mux.Handle(http.MethodPost, pattern_WorkService_WorkAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/work_pb.Work/WorkAction", runtime.WithHTTPPathPattern("/work"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/work_pb.WorkService/WorkAction", runtime.WithHTTPPathPattern("/work"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Work_WorkAction_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_WorkService_WorkAction_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Work_WorkAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_WorkService_WorkAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_WorkService_GetWorkById_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/work_pb.WorkService/GetWorkById", runtime.WithHTTPPathPattern("/work"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_WorkService_GetWorkById_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_WorkService_GetWorkById_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
 }
 
-// RegisterWorkHandlerFromEndpoint is same as RegisterWorkHandler but
+// RegisterWorkServiceHandlerFromEndpoint is same as RegisterWorkServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterWorkHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterWorkServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
@@ -113,45 +168,64 @@ func RegisterWorkHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux,
 			}
 		}()
 	}()
-	return RegisterWorkHandler(ctx, mux, conn)
+	return RegisterWorkServiceHandler(ctx, mux, conn)
 }
 
-// RegisterWorkHandler registers the http handlers for service Work to "mux".
+// RegisterWorkServiceHandler registers the http handlers for service WorkService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterWorkHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterWorkHandlerClient(ctx, mux, NewWorkClient(conn))
+func RegisterWorkServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterWorkServiceHandlerClient(ctx, mux, NewWorkServiceClient(conn))
 }
 
-// RegisterWorkHandlerClient registers the http handlers for service Work
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "WorkClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "WorkClient"
+// RegisterWorkServiceHandlerClient registers the http handlers for service WorkService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "WorkServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "WorkServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "WorkClient" to call the correct interceptors. This client ignores the HTTP middlewares.
-func RegisterWorkHandlerClient(ctx context.Context, mux *runtime.ServeMux, client WorkClient) error {
-	mux.Handle(http.MethodPost, pattern_Work_WorkAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+// "WorkServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
+func RegisterWorkServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client WorkServiceClient) error {
+	mux.Handle(http.MethodPost, pattern_WorkService_WorkAction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/work_pb.Work/WorkAction", runtime.WithHTTPPathPattern("/work"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/work_pb.WorkService/WorkAction", runtime.WithHTTPPathPattern("/work"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Work_WorkAction_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_WorkService_WorkAction_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Work_WorkAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_WorkService_WorkAction_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_WorkService_GetWorkById_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/work_pb.WorkService/GetWorkById", runtime.WithHTTPPathPattern("/work"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_WorkService_GetWorkById_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_WorkService_GetWorkById_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
 }
 
 var (
-	pattern_Work_WorkAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"work"}, ""))
+	pattern_WorkService_WorkAction_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"work"}, ""))
+	pattern_WorkService_GetWorkById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"work"}, ""))
 )
 
 var (
-	forward_Work_WorkAction_0 = runtime.ForwardResponseMessage
+	forward_WorkService_WorkAction_0  = runtime.ForwardResponseMessage
+	forward_WorkService_GetWorkById_0 = runtime.ForwardResponseMessage
 )

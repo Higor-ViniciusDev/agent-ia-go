@@ -67,27 +67,27 @@ func (x *WorkRequest) GetData() *structpb.Struct {
 	return nil
 }
 
-type WorkResponse struct {
+type ResponseWorkAction struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Response      string                 `protobuf:"bytes,1,opt,name=response,proto3" json:"response,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WorkResponse) Reset() {
-	*x = WorkResponse{}
+func (x *ResponseWorkAction) Reset() {
+	*x = ResponseWorkAction{}
 	mi := &file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *WorkResponse) String() string {
+func (x *ResponseWorkAction) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*WorkResponse) ProtoMessage() {}
+func (*ResponseWorkAction) ProtoMessage() {}
 
-func (x *WorkResponse) ProtoReflect() protoreflect.Message {
+func (x *ResponseWorkAction) ProtoReflect() protoreflect.Message {
 	mi := &file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -99,14 +99,174 @@ func (x *WorkResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use WorkResponse.ProtoReflect.Descriptor instead.
-func (*WorkResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ResponseWorkAction.ProtoReflect.Descriptor instead.
+func (*ResponseWorkAction) Descriptor() ([]byte, []int) {
 	return file_internal_infra_grpc_proto_protofiles_work_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *WorkResponse) GetResponse() string {
+func (x *ResponseWorkAction) GetResponse() string {
 	if x != nil {
 		return x.Response
+	}
+	return ""
+}
+
+type GetWorkByIdInput struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWorkByIdInput) Reset() {
+	*x = GetWorkByIdInput{}
+	mi := &file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWorkByIdInput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWorkByIdInput) ProtoMessage() {}
+
+func (x *GetWorkByIdInput) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWorkByIdInput.ProtoReflect.Descriptor instead.
+func (*GetWorkByIdInput) Descriptor() ([]byte, []int) {
+	return file_internal_infra_grpc_proto_protofiles_work_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetWorkByIdInput) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type Work struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Type           string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	Status         string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	ConversationId string                 `protobuf:"bytes,4,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id,omitempty"`
+	Input          string                 `protobuf:"bytes,5,opt,name=input,proto3" json:"input,omitempty"`
+	Output         string                 `protobuf:"bytes,6,opt,name=output,proto3" json:"output,omitempty"`
+	ErrorMessage   string                 `protobuf:"bytes,7,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	CreatedAt      string                 `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      string                 `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	CompletedAt    string                 `protobuf:"bytes,10,opt,name=completed_at,json=completedAt,proto3" json:"completed_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *Work) Reset() {
+	*x = Work{}
+	mi := &file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Work) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Work) ProtoMessage() {}
+
+func (x *Work) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Work.ProtoReflect.Descriptor instead.
+func (*Work) Descriptor() ([]byte, []int) {
+	return file_internal_infra_grpc_proto_protofiles_work_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Work) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Work) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *Work) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *Work) GetConversationId() string {
+	if x != nil {
+		return x.ConversationId
+	}
+	return ""
+}
+
+func (x *Work) GetInput() string {
+	if x != nil {
+		return x.Input
+	}
+	return ""
+}
+
+func (x *Work) GetOutput() string {
+	if x != nil {
+		return x.Output
+	}
+	return ""
+}
+
+func (x *Work) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *Work) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *Work) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
+func (x *Work) GetCompletedAt() string {
+	if x != nil {
+		return x.CompletedAt
 	}
 	return ""
 }
@@ -117,13 +277,30 @@ const file_internal_infra_grpc_proto_protofiles_work_proto_rawDesc = "" +
 	"\n" +
 	"/internal/infra/grpc/proto/protofiles/work.proto\x12\awork_pb\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\":\n" +
 	"\vWorkRequest\x12+\n" +
-	"\x04data\x18\x01 \x01(\v2\x17.google.protobuf.StructR\x04data\"*\n" +
-	"\fWorkResponse\x12\x1a\n" +
-	"\bresponse\x18\x01 \x01(\tR\bresponse2S\n" +
-	"\x04Work\x12K\n" +
+	"\x04data\x18\x01 \x01(\v2\x17.google.protobuf.StructR\x04data\"0\n" +
+	"\x12ResponseWorkAction\x12\x1a\n" +
+	"\bresponse\x18\x01 \x01(\tR\bresponse\"\"\n" +
+	"\x10GetWorkByIdInput\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x9f\x02\n" +
+	"\x04Work\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x16\n" +
+	"\x06status\x18\x03 \x01(\tR\x06status\x12'\n" +
+	"\x0fconversation_id\x18\x04 \x01(\tR\x0econversationId\x12\x14\n" +
+	"\x05input\x18\x05 \x01(\tR\x05input\x12\x16\n" +
+	"\x06output\x18\x06 \x01(\tR\x06output\x12#\n" +
+	"\rerror_message\x18\a \x01(\tR\ferrorMessage\x12\x1d\n" +
 	"\n" +
-	"WorkAction\x12\x14.work_pb.WorkRequest\x1a\x15.work_pb.WorkResponse\"\x10\x82\xd3\xe4\x93\x02\n" +
-	":\x01*\"\x05/workB\x1eZ\x1cinternal/infra/grpc/proto/pbb\x06proto3"
+	"created_at\x18\b \x01(\tR\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\t \x01(\tR\tupdatedAt\x12!\n" +
+	"\fcompleted_at\x18\n" +
+	" \x01(\tR\vcompletedAt2\xa8\x01\n" +
+	"\vWorkService\x12Q\n" +
+	"\n" +
+	"WorkAction\x12\x14.work_pb.WorkRequest\x1a\x1b.work_pb.ResponseWorkAction\"\x10\x82\xd3\xe4\x93\x02\n" +
+	":\x01*\"\x05/work\x12F\n" +
+	"\vGetWorkById\x12\x19.work_pb.GetWorkByIdInput\x1a\r.work_pb.Work\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/workB\x1eZ\x1cinternal/infra/grpc/proto/pbb\x06proto3"
 
 var (
 	file_internal_infra_grpc_proto_protofiles_work_proto_rawDescOnce sync.Once
@@ -137,18 +314,22 @@ func file_internal_infra_grpc_proto_protofiles_work_proto_rawDescGZIP() []byte {
 	return file_internal_infra_grpc_proto_protofiles_work_proto_rawDescData
 }
 
-var file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_internal_infra_grpc_proto_protofiles_work_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_internal_infra_grpc_proto_protofiles_work_proto_goTypes = []any{
-	(*WorkRequest)(nil),     // 0: work_pb.WorkRequest
-	(*WorkResponse)(nil),    // 1: work_pb.WorkResponse
-	(*structpb.Struct)(nil), // 2: google.protobuf.Struct
+	(*WorkRequest)(nil),        // 0: work_pb.WorkRequest
+	(*ResponseWorkAction)(nil), // 1: work_pb.ResponseWorkAction
+	(*GetWorkByIdInput)(nil),   // 2: work_pb.GetWorkByIdInput
+	(*Work)(nil),               // 3: work_pb.Work
+	(*structpb.Struct)(nil),    // 4: google.protobuf.Struct
 }
 var file_internal_infra_grpc_proto_protofiles_work_proto_depIdxs = []int32{
-	2, // 0: work_pb.WorkRequest.data:type_name -> google.protobuf.Struct
-	0, // 1: work_pb.Work.WorkAction:input_type -> work_pb.WorkRequest
-	1, // 2: work_pb.Work.WorkAction:output_type -> work_pb.WorkResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
+	4, // 0: work_pb.WorkRequest.data:type_name -> google.protobuf.Struct
+	0, // 1: work_pb.WorkService.WorkAction:input_type -> work_pb.WorkRequest
+	2, // 2: work_pb.WorkService.GetWorkById:input_type -> work_pb.GetWorkByIdInput
+	1, // 3: work_pb.WorkService.WorkAction:output_type -> work_pb.ResponseWorkAction
+	3, // 4: work_pb.WorkService.GetWorkById:output_type -> work_pb.Work
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -165,7 +346,7 @@ func file_internal_infra_grpc_proto_protofiles_work_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_internal_infra_grpc_proto_protofiles_work_proto_rawDesc), len(file_internal_infra_grpc_proto_protofiles_work_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
