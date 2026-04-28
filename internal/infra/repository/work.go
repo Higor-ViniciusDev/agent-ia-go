@@ -42,7 +42,7 @@ func (w *WorkRepository) GetByID(ctx context.Context, id string) (*entity.Work, 
 			return nil, internal_error.NewBadRequestError("Work not found")
 		}
 
-		logger.Error("Error finding work by id: ", err)
+		logger.Error("Error finding work by ID: ", err)
 		return nil, internal_error.NewInternalServerError("Error finding user")
 	}
 
