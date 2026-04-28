@@ -295,12 +295,13 @@ const file_internal_infra_grpc_proto_protofiles_work_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\t \x01(\tR\tupdatedAt\x12!\n" +
 	"\fcompleted_at\x18\n" +
-	" \x01(\tR\vcompletedAt2\xa8\x01\n" +
+	" \x01(\tR\vcompletedAt2\xad\x01\n" +
 	"\vWorkService\x12Q\n" +
 	"\n" +
 	"WorkAction\x12\x14.work_pb.WorkRequest\x1a\x1b.work_pb.ResponseWorkAction\"\x10\x82\xd3\xe4\x93\x02\n" +
-	":\x01*\"\x05/work\x12F\n" +
-	"\vGetWorkById\x12\x19.work_pb.GetWorkByIdInput\x1a\r.work_pb.Work\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/workB\x1eZ\x1cinternal/infra/grpc/proto/pbb\x06proto3"
+	":\x01*\"\x05/work\x12K\n" +
+	"\vGetWorkById\x12\x19.work_pb.GetWorkByIdInput\x1a\r.work_pb.Work\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/work/{id}B\x1eZ\x1cinternal/infra/grpc/proto/pbb\x06proto3"
 
 var (
 	file_internal_infra_grpc_proto_protofiles_work_proto_rawDescOnce sync.Once

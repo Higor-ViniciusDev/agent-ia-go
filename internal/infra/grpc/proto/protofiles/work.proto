@@ -20,7 +20,7 @@ service WorkService {
   //Get Work by id
   rpc GetWorkById (GetWorkByIdInput) returns (Work) {
     option (google.api.http) = {
-      get: "/work/?{id}"
+      get: "/work/{id}"
     };
   }
 }

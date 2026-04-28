@@ -47,11 +47,11 @@ func (w *WorkService) WorkAction(ctx context.Context, req *pb.WorkRequest) (*pb.
 
 	workOutput, err := w.useCase.Execute(ctx, input)
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, status.Error(err.CodeGrpc, err.Error())
 	}
 
-	jsonBytes, err := json.Marshal(workOutput)
-	if err != nil {
+	jsonBytes, errJson := json.Marshal(workOutput)
+	if errJson != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
@@ -64,7 +64,7 @@ func (c *WorkService) GetWorkById(ctx context.Context, req *pb.GetWorkByIdInput)
 	work, err := c.useCase.FindByID(ctx, req.Id)
 
 	if err != nil {
-		return nil, err
+		return nil, status.Error(err.CodeGrpc, err.Error())
 	}
 
 	return &pb.Work{

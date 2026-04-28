@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	entity "github.com/Higor-ViniciusDev/agent-ia-go/internal/domain/work"
+	"github.com/Higor-ViniciusDev/agent-ia-go/internal/internal_error"
 	"github.com/Higor-ViniciusDev/agent-ia-go/pkg/uuid_pkg"
 )
 
@@ -16,7 +17,7 @@ func New(repo entity.WorkRepositoryInterface) *workUseCase {
 	return &workUseCase{repo: repo}
 }
 
-func (uc *workUseCase) Execute(ctx context.Context, input WorkInput) (*WorkOutput, error) {
+func (uc *workUseCase) Execute(ctx context.Context, input WorkInput) (*WorkOutput, *internal_error.InternalError) {
 	work := entity.NewWorkEntity()
 
 	work.Type = entity.WorkType(input.Type)
@@ -27,7 +28,7 @@ func (uc *workUseCase) Execute(ctx context.Context, input WorkInput) (*WorkOutpu
 	// serializa o Data para JSONB
 	encoded, err := json.Marshal(input.Data)
 	if err != nil {
-		return nil, err
+		return nil, internal_error.NewInternalServerError("Error convert json for byte")
 	}
 	work.Input = encoded
 
