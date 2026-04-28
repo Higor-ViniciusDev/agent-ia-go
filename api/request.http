@@ -102,5 +102,5 @@ Content-Type: application/json
 ###
 
 ###Get work by id
-GET http://localhost:8000/work
+GET http://localhost:8000/work?id=99bda88f-8d60-477f-a15d-e142f9f2b3ac
 Content-Type: application/json
