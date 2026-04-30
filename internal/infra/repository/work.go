@@ -33,13 +33,13 @@ func (w *WorkRepository) Create(ctx context.Context, work *entity.Work) *interna
 }
 
 func (w *WorkRepository) GetByID(ctx context.Context, id string) (*entity.Work, *internal_error.InternalError) {
-	query := `SELECT id, type, status, conversation_id, input, output, 
-	error_message FROM works WHERE id = $1`
-	row := w.db.QueryRowContext(ctx, query, id)
-
 	if _, err := uuid_pkg.PaserID(id); err != nil {
 		return nil, internal_error.NewBadRequestError("uuid invalid")
 	}
+
+	query := `SELECT id, type, status, conversation_id, input, output, 
+	error_message FROM works WHERE id = $1`
+	row := w.db.QueryRowContext(ctx, query, id)
 
 	work := entity.NewWorkEntity()
 	if err := row.Scan(&work.ID, &work.Type, &work.Status, &work.ConversationID, &work.Input, &work.Output, &work.ErrorMessage); err != nil {
@@ -52,4 +52,9 @@ func (w *WorkRepository) GetByID(ctx context.Context, id string) (*entity.Work, 
 	}
 
 	return work, nil
+}
+
+func (w *WorkRepository) DeleteAllWorks(ctx context.Context) {
+	query := `DELETE FROM works;`
+	w.db.QueryRowContext(ctx, query)
 }

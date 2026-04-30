@@ -24,3 +24,8 @@ migrate-up:
 	docker run --rm -v $(CURDIR):/app -w /app migrate/migrate \
 		-path ./sql/migrations \
 		-database "postgres://postgres:postgres@host.docker.internal:5432/work_agent?sslmode=disable" up
+
+migrate-down:
+	docker run --rm -v $(CURDIR):/app -w /app migrate/migrate \
+		-path ./sql/migrations \
+		-database "postgres://postgres:postgres@host.docker.internal:5432/work_agent?sslmode=disable" down

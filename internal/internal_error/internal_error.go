@@ -16,7 +16,7 @@ func NewNotFoundError(message string) *InternalError {
 	return &InternalError{
 		Message:  message,
 		Err:      "not_found",
-		CodeGrpc: codes.InvalidArgument,
+		CodeGrpc: codes.NotFound,
 	}
 }
 
