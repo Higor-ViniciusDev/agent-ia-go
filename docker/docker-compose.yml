@@ -55,6 +55,16 @@ services:
       postgres:
         condition: service_healthy 
 
+  nats:
+    image: nats
+    command: ["-js"]
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    networks:
+      - appdata
+
+
 volumes:
   pgadmin4_data:
   postgres_data:

@@ -3,25 +3,25 @@ package events
 import "time"
 
 type WorkCreated struct {
-	Nome   string
+	Name   string
 	Values any
 }
 
 func NewWorkCreated() *WorkCreated {
 	return &WorkCreated{
-		Nome: "WorkCreated",
+		Name: "WorkCreated",
 	}
 }
 
-func (e *WorkCreated) GetNome() string {
-	return e.Nome
+func (e *WorkCreated) GetName() string {
+	return e.Name
 }
 
-func (e *WorkCreated) GetValues() any {
+func (e *WorkCreated) GetPayload() any {
 	return e.Values
 }
 
-func (e *WorkCreated) SetValues(values any) {
+func (e *WorkCreated) SetPayload(values any) {
 	e.Values = values
 }
 

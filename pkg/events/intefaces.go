@@ -10,14 +10,14 @@ import (
 // Exemplos: usuário fez login, pedido foi criado, arquivo foi enviado, etc.
 type EventInterface interface {
 	// GetNome retorna o nome do evento, por exemplo: "UsuarioLogado".
-	GetNome() string
+	GetName() string
 	// GetDateTime retorna a data e hora em que o evento ocorreu.
 	GetDateTime() time.Time
 	// GetValues retorna os dados associados ao evento.
 	// Pode ser qualquer informação relevante sobre o evento.
-	GetValues() any
+	GetPayload() any
 
-	SetValues(payload interface{})
+	SetPayload(payload any)
 }
 
 // EventoHandlerInterface representa um manipulador de eventos.

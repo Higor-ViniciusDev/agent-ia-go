@@ -15,15 +15,15 @@ type EventoTest struct {
 	value any
 }
 
-func (et *EventoTest) GetNome() string {
+func (et *EventoTest) GetName() string {
 	return et.nome
 }
 
-func (et *EventoTest) GetValues() any {
+func (et *EventoTest) GetPayload() any {
 	return et.value
 }
 
-func (e *EventoTest) SetValues(value interface{}) {
+func (e *EventoTest) SetPayload(value any) {
 	e.value = value
 }
 
@@ -66,52 +66,52 @@ func (suite *EventoDisparadorTestSuite) SetupTest() {
 }
 
 func (suite *EventoDisparadorTestSuite) TestEventoDisparador_Register() {
-	err := suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), &suite.handler)
+	err := suite.EventoDisparador.RegisterHandler(suite.event.GetName(), &suite.handler)
 	suite.Nil(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
 
-	err = suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), &suite.handler2)
+	err = suite.EventoDisparador.RegisterHandler(suite.event.GetName(), &suite.handler2)
 	suite.Nil(err)
-	suite.Equal(2, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
+	suite.Equal(2, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
 
-	assert.Equal(suite.T(), &suite.handler, suite.EventoDisparador.handlers[suite.event.GetNome()][0])
-	assert.Equal(suite.T(), &suite.handler2, suite.EventoDisparador.handlers[suite.event.GetNome()][1])
+	assert.Equal(suite.T(), &suite.handler, suite.EventoDisparador.handlers[suite.event.GetName()][0])
+	assert.Equal(suite.T(), &suite.handler2, suite.EventoDisparador.handlers[suite.event.GetName()][1])
 }
 
 func (suite *EventoDisparadorTestSuite) TestEventoDisparador_Registe_HandlersRepetido() {
-	err := suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), &suite.handler)
+	err := suite.EventoDisparador.RegisterHandler(suite.event.GetName(), &suite.handler)
 	suite.Nil(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
 
-	err = suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), &suite.handler)
+	err = suite.EventoDisparador.RegisterHandler(suite.event.GetName(), &suite.handler)
 	suite.Error(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
 
-	assert.Equal(suite.T(), &suite.handler, suite.EventoDisparador.handlers[suite.event.GetNome()][0])
+	assert.Equal(suite.T(), &suite.handler, suite.EventoDisparador.handlers[suite.event.GetName()][0])
 }
 
 func (suite *EventoDisparadorTestSuite) TestEventoDisparador_Has() {
-	err := suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), &suite.handler)
+	err := suite.EventoDisparador.RegisterHandler(suite.event.GetName(), &suite.handler)
 	suite.Nil(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
 
-	retorno := suite.EventoDisparador.HasHandlers(suite.event.GetNome(), &suite.handler)
+	retorno := suite.EventoDisparador.HasHandlers(suite.event.GetName(), &suite.handler)
 	suite.Equal(true, retorno)
 
-	retorno1 := suite.EventoDisparador.HasHandlers(suite.event.GetNome(), &suite.handler2)
+	retorno1 := suite.EventoDisparador.HasHandlers(suite.event.GetName(), &suite.handler2)
 	suite.Equal(false, retorno1)
 
 }
 
 func (suite *EventoDisparadorTestSuite) TestEventoDisparador_Clear() {
 	// Event 1
-	err := suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), &suite.handler)
+	err := suite.EventoDisparador.RegisterHandler(suite.event.GetName(), &suite.handler)
 	suite.Nil(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
 
-	err = suite.EventoDisparador.RegisterHandler(suite.event2.GetNome(), &suite.handler)
+	err = suite.EventoDisparador.RegisterHandler(suite.event2.GetName(), &suite.handler)
 	suite.Nil(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event2.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event2.GetName()]))
 
 	suite.EventoDisparador.Clear()
 	suite.Equal(0, len(suite.EventoDisparador.handlers))
@@ -119,17 +119,17 @@ func (suite *EventoDisparadorTestSuite) TestEventoDisparador_Clear() {
 
 func (suite *EventoDisparadorTestSuite) TestEventoDisparador_Remove() {
 	// Event 1
-	err := suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), &suite.handler)
+	err := suite.EventoDisparador.RegisterHandler(suite.event.GetName(), &suite.handler)
 	suite.Nil(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
 
-	err = suite.EventoDisparador.RegisterHandler(suite.event2.GetNome(), &suite.handler)
+	err = suite.EventoDisparador.RegisterHandler(suite.event2.GetName(), &suite.handler)
 	suite.Nil(err)
-	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event2.GetNome()]))
+	suite.Equal(1, len(suite.EventoDisparador.handlers[suite.event2.GetName()]))
 
-	suite.EventoDisparador.Remove(suite.event.GetNome(), &suite.handler)
-	suite.Equal(0, len(suite.EventoDisparador.handlers[suite.event.GetNome()]))
-	suite.False(suite.EventoDisparador.HasHandlers(suite.event.GetNome(), &suite.handler))
+	suite.EventoDisparador.Remove(suite.event.GetName(), &suite.handler)
+	suite.Equal(0, len(suite.EventoDisparador.handlers[suite.event.GetName()]))
+	suite.False(suite.EventoDisparador.HasHandlers(suite.event.GetName(), &suite.handler))
 }
 
 type MockHandler struct {
@@ -149,8 +149,8 @@ func (suite *EventoDisparadorTestSuite) TestEventoDisparador_Called() {
 	mockHandle2.On("Handle", &suite.event)
 
 	//"Registrar" o manipulador de eventos
-	suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), mockHandle)
-	suite.EventoDisparador.RegisterHandler(suite.event.GetNome(), mockHandle2)
+	suite.EventoDisparador.RegisterHandler(suite.event.GetName(), mockHandle)
+	suite.EventoDisparador.RegisterHandler(suite.event.GetName(), mockHandle2)
 
 	// Disparar o evento
 	suite.EventoDisparador.Dispatch(&suite.event)

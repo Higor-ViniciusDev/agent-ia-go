@@ -10,7 +10,8 @@ import (
 	"syscall"
 
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/config"
-	event_handler "github.com/Higor-ViniciusDev/agent-ia-go/internal/events"
+	work_event "github.com/Higor-ViniciusDev/agent-ia-go/internal/events/work"
+	"github.com/Higor-ViniciusDev/agent-ia-go/internal/events/work/handlers"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/database"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/proto/pb"
 	"github.com/Higor-ViniciusDev/agent-ia-go/internal/infra/grpc/service"
@@ -18,6 +19,7 @@ import (
 	work_usecase "github.com/Higor-ViniciusDev/agent-ia-go/internal/usecase/work"
 	"github.com/Higor-ViniciusDev/agent-ia-go/pkg/events"
 	"github.com/Higor-ViniciusDev/agent-ia-go/pkg/logger"
+	"github.com/Higor-ViniciusDev/agent-ia-go/pkg/nats"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -37,14 +39,17 @@ func (a *App) Run(ctx context.Context) error {
 	grpcServer := grpc.NewServer()
 
 	db := database.NewConnect(a.cfg)
-	// nats, err := nats.NewConnectionNats()
-	// if err != nil {
-	// 	return fmt.Errorf("failed load nats broker: %w", err)
-	// }
+	conNats, err := nats.NewConnectionNats(a.cfg.BrokerUrl, a.cfg.BrokerPort)
+	if err != nil {
+		return fmt.Errorf("failed load nats broker: %w", err)
+	}
 
+	//
 	eventsDispatcher := events.NewEventDispatcher()
-	eventCreatedWork := event_handler.NewWorkCreated()
+	eventCreatedWork := work_event.NewWorkCreated()
 
+	handlerCreateWork := handlers.NewWorkCreatedHandler(conNats)
+	eventsDispatcher.RegisterHandler(eventCreatedWork.GetName(), handlerCreateWork)
 	workRepo := repository.NewWorkRepository(db)                                  // infra
 	workUseCase := work_usecase.New(workRepo, eventCreatedWork, eventsDispatcher) // usecase
 	workService := service.NewWorkService(workUseCase)                            // grpc service

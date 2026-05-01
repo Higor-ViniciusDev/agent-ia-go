@@ -49,7 +49,7 @@ func (uc *workUseCase) Execute(ctx context.Context, input WorkInput) (*WorkOutpu
 		Status: string(work.Status),
 	}
 
-	uc.eventWorkCreated.SetValues(response)
+	uc.eventWorkCreated.SetPayload(response)
 	errDispatch := uc.eventDispachet.Dispatch(uc.eventWorkCreated)
 
 	if errDispatch != nil {

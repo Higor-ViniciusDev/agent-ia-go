@@ -12,6 +12,8 @@ type Config struct {
 	DBUser     string
 	DBPassword string
 	DBName     string
+	BrokerPort string
+	BrokerUrl  string
 }
 
 func Load() *Config {
@@ -24,6 +26,9 @@ func Load() *Config {
 		DBUser:     getEnv("DB_USER", ""),
 		DBPassword: getEnv("DB_PASSWORD", ""),
 		DBName:     getEnv("DB_NAME", ""),
+
+		BrokerPort: getEnv("PORT_BROKER", ""),
+		BrokerUrl:  getEnv("URL_BROKER", ""),
 	}
 }
 

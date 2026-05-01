@@ -15,6 +15,7 @@ func main() {
 	ctx := context.Background()
 	cfg := config.Load()
 
+	app.Start(cfg)
 	if err := app.New(cfg).Run(ctx); err != nil {
 		log.Fatal(err)
 	}
