@@ -30,3 +30,16 @@ func EnsureWorkStream(js nats.JetStreamContext) error {
 	})
 	return err
 }
+
+func SetupWorkPedingQueue(nc *nats.Conn) error {
+	js, err := nc.JetStream()
+	if err != nil {
+		return err
+	}
+
+	if err := EnsureWorkStream(js); err != nil {
+		return err
+	}
+
+	return nil
+}

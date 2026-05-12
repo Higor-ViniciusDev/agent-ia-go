@@ -44,7 +44,6 @@ func (a *App) Run(ctx context.Context) error {
 		return fmt.Errorf("failed load nats broker: %w", err)
 	}
 
-	//
 	eventsDispatcher := events.NewEventDispatcher()
 	eventCreatedWork := work_event.NewWorkCreated()
 

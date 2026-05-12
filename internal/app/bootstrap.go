@@ -20,7 +20,6 @@ func Start(cfg *config.Config) error {
 	if err := nats.EnsureWorkStream(js); err != nil {
 		return err
 	}
-
 	_, err = js.QueueSubscribe(
 		"work.*",
 		"workers",

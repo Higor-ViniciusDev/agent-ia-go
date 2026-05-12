@@ -29,9 +29,9 @@ func (ch *CreateWorkHandler) Handle(event events.EventInterface, wg *sync.WaitGr
 		jsonOutput = []byte("{error:true}")
 	}
 
-	err = ch.BrokerChannel.Publish("work.create", jsonOutput)
+	err = ch.BrokerChannel.Publish("work.pending", jsonOutput)
 
 	if err != nil {
-		logger.Error("Publish create work failed, error in comunnication with broker", err)
+		logger.Error("Publish pending work failed, error in comunnication with broker", err)
 	}
 }
