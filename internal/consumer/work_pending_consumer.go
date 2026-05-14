@@ -8,22 +8,23 @@ import (
 )
 
 type WorkPendingConsumer struct {
-	channel *nats.Conn
+	channel nats.JetStreamContext
 }
 type workPendingMessage struct {
-	Id string `json:"id"`
+	Id     string `json:"id"`
+	Status string `json:"status"`
 }
 
-func NewWorkPendingConsumer(channel *nats.Conn) *WorkPendingConsumer {
+func NewWorkPendingConsumer(channel nats.JetStreamContext) *WorkPendingConsumer {
 	return &WorkPendingConsumer{
 		channel: channel,
 	}
 }
 
-func (c *WorkPendingConsumer) Start(js nats.JetStreamContext) error {
+func (c *WorkPendingConsumer) Start() error {
 	logger.Info("Starting Consumer pending")
 
-	_, err := js.QueueSubscribe(
+	_, err := c.channel.QueueSubscribe(
 		"work.pending",
 		"workers",
 		func(msg *nats.Msg) {
@@ -45,5 +46,4 @@ func (c *WorkPendingConsumer) handle(msg *nats.Msg) {
 		return
 	}
 
-	logger.Info("WorkPendingConsumer: received work id " + payload.Id)
 }

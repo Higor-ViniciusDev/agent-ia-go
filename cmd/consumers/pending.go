@@ -30,8 +30,12 @@ func main() {
 		panic(fmt.Errorf("Error in create fila WORKS: %w", err))
 	}
 
-	consumeWork := consumer.NewWorkPendingConsumer(conNats)
-	go consumeWork.Start(js)
+	consumeWork := consumer.NewWorkPendingConsumer(js)
 
+	go func() {
+		if err := consumeWork.Start(); err != nil {
+			panic(fmt.Errorf("failed to start consumer: %w", err))
+		}
+	}()
 	select {}
 }
