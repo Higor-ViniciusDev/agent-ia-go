@@ -26,6 +26,10 @@ func main() {
 		panic(err)
 	}
 
+	if err := nats.EnsureWorkStream(js); err != nil {
+		panic(fmt.Errorf("Error in create fila WORKS: %w", err))
+	}
+
 	consumeWork := consumer.NewWorkPendingConsumer(conNats)
 	go consumeWork.Start(js)
 

@@ -10,10 +10,10 @@ import (
 )
 
 type CreateWorkHandler struct {
-	BrokerChannel *nats.Conn
+	BrokerChannel nats.JetStreamContext
 }
 
-func NewWorkCreatedHandler(channel *nats.Conn) *CreateWorkHandler {
+func NewWorkCreatedHandler(channel nats.JetStreamContext) *CreateWorkHandler {
 	return &CreateWorkHandler{
 		BrokerChannel: channel,
 	}
@@ -29,7 +29,7 @@ func (ch *CreateWorkHandler) Handle(event events.EventInterface, wg *sync.WaitGr
 		jsonOutput = []byte("{error:true}")
 	}
 
-	err = ch.BrokerChannel.Publish("work.pending", jsonOutput)
+	_, err = ch.BrokerChannel.Publish("work.pending", jsonOutput) // ← js.Publish
 
 	if err != nil {
 		logger.Error("Publish pending work failed, error in comunnication with broker", err)

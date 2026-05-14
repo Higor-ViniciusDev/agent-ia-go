@@ -57,7 +57,7 @@ func (a *App) Run(ctx context.Context) error {
 	eventsDispatcher := events.NewEventDispatcher()
 	eventCreatedWork := work_event.NewWorkCreated()
 
-	handlerCreateWork := handlers.NewWorkCreatedHandler(conNats)
+	handlerCreateWork := handlers.NewWorkCreatedHandler(js)
 	eventsDispatcher.RegisterHandler(eventCreatedWork.GetName(), handlerCreateWork)
 	workRepo := repository.NewWorkRepository(db)                                  // infra
 	workUseCase := work_usecase.New(workRepo, eventCreatedWork, eventsDispatcher) // usecase
