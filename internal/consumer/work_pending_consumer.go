@@ -14,13 +14,15 @@ type workPendingMessage struct {
 	Id string `json:"id"`
 }
 
-func NewEmailPendingConsumer(channel *nats.Conn) *WorkPendingConsumer {
+func NewWorkPendingConsumer(channel *nats.Conn) *WorkPendingConsumer {
 	return &WorkPendingConsumer{
 		channel: channel,
 	}
 }
 
 func (c *WorkPendingConsumer) Start(js nats.JetStreamContext) error {
+	logger.Info("Starting Consumer pending")
+
 	_, err := js.QueueSubscribe(
 		"work.pending",
 		"workers",
@@ -31,6 +33,7 @@ func (c *WorkPendingConsumer) Start(js nats.JetStreamContext) error {
 		nats.Durable("workers"),
 		nats.ManualAck(),
 	)
+
 	return err
 }
 

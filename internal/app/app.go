@@ -43,6 +43,16 @@ func (a *App) Run(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed load nats broker: %w", err)
 	}
+	defer conNats.Close()
+
+	js, err := conNats.JetStream()
+	if err != nil {
+		return fmt.Errorf("Error in initialized jetStream conection nats: %w", err)
+	}
+
+	if err := nats.EnsureWorkStream(js); err != nil {
+		return fmt.Errorf("Error in create fila WORKS: %w", err)
+	}
 
 	eventsDispatcher := events.NewEventDispatcher()
 	eventCreatedWork := work_event.NewWorkCreated()
