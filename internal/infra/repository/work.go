@@ -58,3 +58,13 @@ func (w *WorkRepository) DeleteAllWorks(ctx context.Context) {
 	query := `DELETE FROM works;`
 	w.db.QueryRowContext(ctx, query)
 }
+
+func (w *WorkRepository) UpdateStatus(ctx context.Context, id string, status entity.WorkStatus) *internal_error.InternalError {
+	query := `UPDATE works SET status = $1, updated_at = NOW() WHERE id = $2`
+	_, err := w.db.ExecContext(ctx, query, status, id)
+	if err != nil {
+		logger.Error("Error updating work status: ", err)
+		return internal_error.NewInternalServerError("Error updating work status")
+	}
+	return nil
+}

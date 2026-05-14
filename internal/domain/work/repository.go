@@ -9,4 +9,5 @@ import (
 type WorkRepositoryInterface interface {
 	Create(ctx context.Context, work *Work) *internal_error.InternalError
 	GetByID(ctx context.Context, id string) (*Work, *internal_error.InternalError)
+	UpdateStatus(ctx context.Context, id string, status WorkStatus) *internal_error.InternalError
 }
